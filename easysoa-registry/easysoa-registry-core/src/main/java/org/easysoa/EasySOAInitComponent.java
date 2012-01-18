@@ -46,11 +46,11 @@ public class EasySOAInitComponent extends DefaultComponent {
         Repository defaultRepository = repoService.getDefaultRepository();
 
         // Init default domain
-        try {
+       /* try {
             new DomainInit(defaultRepository.getName()).runUnrestricted();
         } catch (Exception e) {
             log.warn("Failed to access default repository for initialization: " + e.getMessage());
-        }
+        }*/
 
         try {
             new UserInit(defaultRepository.getName()).runUnrestricted(); // Demo: Init users

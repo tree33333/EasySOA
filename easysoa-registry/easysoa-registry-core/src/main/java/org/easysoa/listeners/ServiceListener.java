@@ -98,8 +98,8 @@ public class ServiceListener implements EventListener {
         boolean isRunningValidation;
         try {
             DocumentModel oldDoc = session.getDocument(doc.getRef());
-            Boolean wasDirty = (Boolean) oldDoc.getProperty(Service.SCHEMA, Service.PROP_VALIDATIONSTATEDIRTY);
-            Boolean isNowDirty = (Boolean) doc.getProperty(Service.SCHEMA, Service.PROP_VALIDATIONSTATEDIRTY);
+            Boolean wasDirty = (Boolean) oldDoc.getContextData(Service.CONTEXT_VALIDATIONSTATEDIRTY);
+            Boolean isNowDirty = (Boolean) doc.getContextData(Service.CONTEXT_VALIDATIONSTATEDIRTY);
             isRunningValidation = (isNowDirty != null) && (wasDirty != isNowDirty);
         } catch (ClientException e1) {
             isRunningValidation = false;
@@ -276,7 +276,7 @@ public class ServiceListener implements EventListener {
 
             // Make sure the validation is re-run (unless we precisely just changed the validation state)
             if (!isRunningValidation) {
-            	doc.setProperty(Service.SCHEMA, Service.PROP_VALIDATIONSTATEDIRTY, true);
+            	doc.putContextData(Service.CONTEXT_VALIDATIONSTATEDIRTY, true);
             }
             
             // Test if the service already exists, delete the other one(s) if necessary

@@ -1,3 +1,23 @@
+/**
+ * EasySOA Registry
+ * Copyright 2011 Open Wide
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Contact : easysoa-dev@googlegroups.com
+ */
+
 package org.easysoa.validation;
 
 import java.net.MalformedURLException;
@@ -114,7 +134,7 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
             // Validate services
             if (services != null) {
                 for (DocumentModel service : services) {
-                	Object isValidationStateDirty = service.getProperty(Service.SCHEMA, Service.PROP_VALIDATIONSTATEDIRTY);
+                	Object isValidationStateDirty = service.getContextData(Service.CONTEXT_VALIDATIONSTATEDIRTY);
                 	if (isValidationStateDirty == null || ((Boolean) isValidationStateDirty)) {
 	                    DocumentModel matchingService = null;
 	                    SortedSet<CorrelationMatch> matches = findCorrelatedServices(session, service, referenceServices);
@@ -146,6 +166,8 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
      * @throws ClientException 
      */
     private List<String> validateService(CoreSession session, DocumentModel service, DocumentModel referenceService) throws ClientException {
+
+        service.putContextData(Service.CONTEXT_VALIDATIONSTATEDIRTY, false);
         
         // Init
         List<String> allErrors = new LinkedList<String>();
@@ -184,7 +206,6 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
         }
         
         // Update service validation state
-        service.setProperty(Service.SCHEMA, Service.PROP_VALIDATIONSTATEDIRTY, false);
         service.setProperty(Service.SCHEMA, Service.PROP_ISVALIDATED, isNowValidated);
         service.setProperty(Service.SCHEMA, Service.PROP_VALIDATIONSTATE, newValidationState);
         session.saveDocument(service); 

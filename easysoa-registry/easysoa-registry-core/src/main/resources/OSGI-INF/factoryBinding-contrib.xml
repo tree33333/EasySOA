@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.core.contrib.factoryBinding">
+
+  <require>org.nuxeo.ecm.platform.content.template.service.ContentTemplateService.defaultContrib</require>
+  
+  <extension target="org.nuxeo.ecm.platform.content.template.service.ContentTemplateService" point="factoryBinding">
+    
+    <!-- Domain initialization override -->
+    <factoryBinding factoryName="SimpleTemplateFactory" name="DomainFactory" targetType="Domain">
+      <template>
+        <templateItem description="Workspaces" id="workspaces" title="Service Registry" typeName="WorkspaceRoot" />
+        <templateItem description="Sections" id="sections" title="Environments" typeName="SectionRoot" />
+      </template>
+    </factoryBinding>
+    
+    <!-- Default environment init -->
+    <factoryBinding factoryName="SimpleTemplateFactory" name="WorkspaceRootFactory" targetType="WorkspaceRoot">
+      <template>
+        <templateItem id="master" title="Master" typeName="Workspace" />
+      </template>
+    </factoryBinding>
+    
+    <!-- Default application init on Workspace creation -->
+    <factoryBinding factoryName="SimpleTemplateFactory" name="WorkspaceFactory" targetType="Workspace">
+      <template>
+        <templateItem id="defaultapp" title="Default application" typeName="AppliImpl" />
+      </template>
+    </factoryBinding>
+    
+    <!-- Default Root contribution (in case we want to customize ACEs) -->
+    <!-- 
+    <factoryBinding factoryName="SimpleTemplateRootFactory"
+      name="RootFactory" targetType="Root">
+      <acl>
+        <ace granted="true" permission="Everything" principal="Administrator" />
+        <ace granted="true" permission="Read" principal="members" />
+      </acl>
+      <template>
+        <templateItem description="Default domain" id="default-domain"
+          title="Default domain" typeName="Domain" />
+      </template>
+    </factoryBinding>
+   -->
+  
+  </extension>
+
+</component>
